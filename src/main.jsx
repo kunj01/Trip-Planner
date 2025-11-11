@@ -4,14 +4,22 @@ import App from './App.jsx'
 import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import CreateTrip from './create-trip/index.jsx'
-import Header from './components/custom/Header.jsx'
-import { Toaster } from './components/ui/sonner.jsx'
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import Layout from './components/custom/Layout.jsx'
 import Viewtrip from './view-trip/[tripId]/index.jsx'
 import MyTrips from './my-trips/index.jsx'
 
+const Discover = React.lazy(() => import('./discover/index.jsx'))
+const Flights = React.lazy(() => import('./flights/index.jsx'))
+const Restaurants = React.lazy(() => import('./restaurants/index.jsx'))
+const Hotels = React.lazy(() => import('./hotels/index.jsx'))
+const Trips = React.lazy(() => import('./trips/index.jsx'))
+
 const router = createBrowserRouter([{
   path: '/',
+  element: <Layout />,
+  children: [{
+  path: '',
   element: <App />
 },
 {
@@ -25,7 +33,27 @@ const router = createBrowserRouter([{
 {
   path: '/my-trips',
   element: <MyTrips />
-}
+},
+{
+  path: '/discover',
+  element: <React.Suspense fallback={<div>Loading...</div>}><Discover /></React.Suspense>
+},
+{
+  path: '/flights',
+  element: <React.Suspense fallback={<div>Loading...</div>}><Flights /></React.Suspense>
+},
+{
+  path: '/restaurants',
+  element: <React.Suspense fallback={<div>Loading...</div>}><Restaurants /></React.Suspense>
+},
+{
+  path: '/hotels',
+  element: <React.Suspense fallback={<div>Loading...</div>}><Hotels /></React.Suspense>
+},
+{
+  path: '/trips',
+  element: <React.Suspense fallback={<div>Loading...</div>}><Trips /></React.Suspense>
+}]}
 
 ])
 
@@ -50,9 +78,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       }
       return (
         <GoogleOAuthProvider clientId={googleClientId}>
-          <Header />
-          <Toaster/>
-          <RouterProvider router={router}/>
+          <RouterProvider router={router} />
         </GoogleOAuthProvider>
       );
     })()}
