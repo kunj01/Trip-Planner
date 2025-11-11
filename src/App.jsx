@@ -1,30 +1,33 @@
-import { useState, useEffect } from 'react'
-import './App.css'
-import Hero from './components/custom/Hero'
-import HomePage from './components/custom/HomePage'
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Navbar } from './components';
+import {
+  Home,
+  MapView,
+  RestaurantsList,
+  HotelsList,
+  AttractionsList,
+  SearchResult,
+  ItineraryPage
+} from './pages';
 
-function App() {
-  const [user, setUser] = useState(null);
-  
-  useEffect(() => {
-    // Check if user is logged in
-    const userData = localStorage.getItem('user');
-    if (userData) {
-      setUser(JSON.parse(userData));
-    }
-  }, []);
-
+const App = () => {
   return (
-    <>
-      {user ? (
-        // Show HomePage for logged in users
-        <HomePage />
-      ) : (
-        // Show Hero/Landing page for non-logged in users
-        <Hero />
-      )}
-    </>
-  )
-}
+    <Router>
+      <div className="bg-[#f5f5f5]">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/map" element={<MapView />} />
+          <Route path="/restaurants" element={<RestaurantsList />} />
+          <Route path="/hotels" element={<HotelsList />} />
+          <Route path="/attractions" element={<AttractionsList />} />
+          <Route path="/search/:query" element={<SearchResult />} />
+          <Route path="/itinerary" element={<ItineraryPage />} />
+        </Routes>
+      </div>
+    </Router>
+  );
+};
 
-export default App
+export default App;
